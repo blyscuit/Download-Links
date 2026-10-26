@@ -1,0 +1,143 @@
+HTTP Link Extractor
+
+A Python script that extracts all HTTP and HTTPS links from a file and optionally downloads the files linked to by those URLs.
+
+Features
+
+* Extracts http:// and https:// links.
+* Removes duplicate URLs.
+* Lists all extracted links without downloading by default.
+* Optionally downloads files from extracted URLs.
+* Skips existing files when the destination filename already exists.
+* Retries failed downloads up to three times.
+* Supports a custom download directory.
+* Streams downloads to reduce memory usage.
+
+Requirements
+
+* Python 3.9 or later
+* requests
+
+Installation
+
+1. Create a Python virtual environment
+
+A virtual environment keeps project dependencies separate from your system Python installation.
+
+macOS / Linux
+
+python3 -m venv .venv
+
+Windows
+
+python -m venv .venv
+
+2. Activate the virtual environment
+
+macOS / Linux
+
+source .venv/bin/activate
+
+Windows PowerShell
+
+.venv\Scripts\Activate.ps1
+
+Windows Command Prompt
+
+.venv\Scripts\activate.bat
+
+Once activated, your terminal should display (.venv).
+
+3. Install dependencies
+
+python -m pip install --upgrade pip
+python -m pip install requests
+
+4. Deactivate the virtual environment
+
+When you’re finished, run:
+
+deactivate
+
+You can reactivate the environment whenever you return to the project.
+
+Usage
+
+1. List all links
+
+By default, the script only extracts and displays links. It does not download anything.
+
+python workshop_links.py input.txt
+
+Replace input.txt with the path to your input file.
+
+2. Download all linked files
+
+Pass the --download argument to download files from all extracted URLs.
+
+python workshop_links.py input.txt --download
+
+Downloaded files are saved in the workshop_downloads directory by default.
+
+3. Specify an output directory
+
+Use --output to choose a different download directory.
+
+python workshop_links.py input.txt --download --output downloads
+
+The output directory will be created automatically if it does not exist.
+
+4. Save the extracted links to a text file
+
+On macOS or Linux:
+
+python workshop_links.py input.txt > links.txt
+
+This captures the script’s console output, including status messages.
+
+Command-Line Arguments
+
+Argument	Required	Default	Description
+file	Yes	—	Path to the input file
+--download	No	Disabled	Download files from extracted URLs
+--output	No	workshop_downloads	Directory where downloaded files are saved
+
+How It Works
+
+1. Reads the input file as UTF-8 text.
+2. Searches for HTTP and HTTPS URLs.
+3. Removes common trailing punctuation from extracted URLs.
+4. Removes duplicate URLs while preserving their original order.
+5. Prints the extracted URLs.
+6. If --download is specified, downloads each URL into the output directory.
+7. Retries failed downloads up to three times.
+
+Important Notes
+
+* Downloads are disabled by default. Files are downloaded only when --download is specified.
+* The script is designed for text-based files. Binary files may require additional processing.
+* Some URLs point to web pages rather than direct file downloads. These may download HTML instead of the intended resource.
+* Different URLs may refer to files with the same filename. The script attempts to avoid overwriting existing files by adding an index to the filename.
+* Only download files from sources you trust.
+
+Project Structure
+
+.
+├── workshop_links.py
+├── README.md
+├── .gitignore
+└── workshop_downloads/
+    └── ...
+
+Recommended .gitignore
+
+To prevent the virtual environment and downloaded files from being committed to Git, add the following to .gitignore:
+
+.venv/
+__pycache__/
+*.py[cod]
+workshop_downloads/
+
+License
+
+This project is licensed under the MIT License.
